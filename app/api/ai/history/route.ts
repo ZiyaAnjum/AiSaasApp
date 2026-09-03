@@ -19,6 +19,8 @@ export async function GET(req: NextRequest) {
     const toolId = searchParams.get('toolId');
     const search = searchParams.get('search')?.trim();
     const favoritesOnly = searchParams.get('favorites') === 'true';
+    const workspace = searchParams.get('workspace');
+    const arenaOnly = searchParams.get('arena') === 'true';
 
     const query: any = { userId: payload.id };
 
@@ -30,11 +32,20 @@ export async function GET(req: NextRequest) {
       query.isFavorite = true;
     }
 
+    if (workspace && workspace !== 'all') {
+      query.workspace = workspace;
+    }
+
+    if (arenaOnly) {
+      query.isArena = true;
+    }
+
     if (search) {
       query.$or = [
         { prompt: { $regex: search, $options: 'i' } },
         { response: { $regex: search, $options: 'i' } },
         { toolName: { $regex: search, $options: 'i' } },
+        { tags: { $in: [new RegExp(search, 'i')] } },
       ];
     }
 
@@ -55,6 +66,12 @@ export async function GET(req: NextRequest) {
       isFavorite: l.isFavorite,
       source: l.source,
       apiKeyId: l.apiKeyId,
+      tags: l.tags || [],
+      workspace: l.workspace || 'Default',
+      isArena: l.isArena || false,
+      arenaModelB: l.arenaModelB,
+      arenaResponseB: l.arenaResponseB,
+      arenaWinner: l.arenaWinner,
     }));
 
     return NextResponse.json({
@@ -117,20 +134,33 @@ export async function PATCH(req: NextRequest) {
     }
 
     const { PromptHistory: PromptHistoryModel } = await getDb();
-    const { id, isFavorite } = await req.json();
+    const { id, isFavorite, arenaWinner, tags, workspace } = await req.json();
 
     const log = await PromptHistoryModel.findOne({ id, userId: payload.id });
     if (!log) {
       return NextResponse.json({ error: 'History item not found' }, { status: 404 });
     }
 
-    log.isFavorite = typeof isFavorite === 'boolean' ? isFavorite : !log.isFavorite;
+    if (typeof isFavorite === 'boolean') {
+      log.isFavorite = isFavorite;
+    }
+    if (arenaWinner) {
+      log.arenaWinner = arenaWinner;
+    }
+    if (Array.isArray(tags)) {
+      log.tags = tags;
+    }
+    if (workspace) {
+      log.workspace = workspace;
+    }
+
     await log.save();
 
     return NextResponse.json({
       success: true,
-      message: log.isFavorite ? 'Saved to favorites' : 'Removed from favorites',
+      message: 'History item updated successfully',
       isFavorite: log.isFavorite,
+      arenaWinner: log.arenaWinner,
     });
   } catch (error) {
     console.error('History PATCH error:', error);

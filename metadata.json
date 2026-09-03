@@ -1,6 +1,6 @@
 {
-  "name": "AI SaaS App",
-  "description": "AI SaaS Application",
+  "name": "NexusAI - Enterprise AI Tools & Model Studio SaaS",
+  "description": "Enterprise AI SaaS platform with real-time streaming, Gemini model arena benchmarking, prompt optimization, and MongoDB persistence.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

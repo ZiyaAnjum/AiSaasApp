@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AI SaaS App",
-  description: "AI SaaS Application",
+  title: "NexusAI - Enterprise AI Tools & Model Studio SaaS",
+  description: "Enterprise AI SaaS platform with real-time streaming, Gemini model arena benchmarking, prompt optimization, and MongoDB persistence.",
 };
 
 export default function RootLayout({

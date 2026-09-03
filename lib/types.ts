@@ -74,6 +74,49 @@ export interface AiRequestLog {
   isFavorite: boolean;
   source: 'web' | 'api';
   apiKeyId?: string;
+  tags?: string[];
+  workspace?: string;
+  isArena?: boolean;
+  arenaModelB?: string;
+  arenaResponseB?: string;
+  arenaWinner?: 'modelA' | 'modelB' | 'tie';
+}
+
+export interface PromptTemplate {
+  id: string;
+  title: string;
+  description: string;
+  category: 'Engineering' | 'Marketing' | 'Business' | 'Data' | 'Writing' | 'Productivity';
+  toolId: string;
+  template: string;
+  variables: {
+    name: string;
+    label: string;
+    placeholder: string;
+    defaultValue?: string;
+    type?: 'text' | 'textarea' | 'select';
+    options?: string[];
+  }[];
+  tags: string[];
+}
+
+export interface ArenaComparisonResult {
+  id: string;
+  prompt: string;
+  modelA: {
+    name: string;
+    response: string;
+    latencyMs: number;
+    tokens: { promptTokens: number; completionTokens: number; totalTokens: number };
+  };
+  modelB: {
+    name: string;
+    response: string;
+    latencyMs: number;
+    tokens: { promptTokens: number; completionTokens: number; totalTokens: number };
+  };
+  winner?: 'modelA' | 'modelB' | 'tie';
+  date: string;
 }
 
 export interface Subscription {

@@ -19,6 +19,12 @@ export interface IPromptHistory {
   isFavorite: boolean;
   source: 'web' | 'api';
   apiKeyId?: string;
+  tags?: string[];
+  workspace?: string;
+  isArena?: boolean;
+  arenaModelB?: string;
+  arenaResponseB?: string;
+  arenaWinner?: 'modelA' | 'modelB' | 'tie';
 }
 
 const PromptHistorySchema = new Schema<IPromptHistory>(
@@ -41,6 +47,12 @@ const PromptHistorySchema = new Schema<IPromptHistory>(
     isFavorite: { type: Boolean, default: false, index: true },
     source: { type: String, enum: ['web', 'api'], default: 'web', index: true },
     apiKeyId: { type: String, index: true },
+    tags: { type: [String], default: [] },
+    workspace: { type: String, default: 'Default' },
+    isArena: { type: Boolean, default: false },
+    arenaModelB: { type: String },
+    arenaResponseB: { type: String },
+    arenaWinner: { type: String, enum: ['modelA', 'modelB', 'tie'] },
   },
   {
     timestamps: false,
