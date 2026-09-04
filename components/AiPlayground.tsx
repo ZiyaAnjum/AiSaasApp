@@ -1187,19 +1187,32 @@ export default function AiPlayground() {
                       {/* Action Controls: Voice, Copy, Favorite, Export */}
                       <div className="flex flex-wrap items-center gap-1.5">
                         {/* Audio Narration (TTS) */}
-                        <button
-                          id="tts-narration-btn"
-                          onClick={() => toggleTTS(currentResponse)}
-                          className={`flex items-center gap-1 rounded-lg border px-2.5 py-1 text-xs font-semibold ${
-                            isSpeaking
-                              ? 'border-indigo-300 bg-indigo-50 text-indigo-700 animate-pulse dark:bg-indigo-950 dark:text-indigo-300'
-                              : 'border-zinc-200 bg-white text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200'
-                          }`}
-                          title="Listen to AI voice narration"
-                        >
-                          {isSpeaking ? <VolumeX className="h-3.5 w-3.5" /> : <Volume2 className="h-3.5 w-3.5" />}
-                          <span>{isSpeaking ? 'Stop Audio' : 'Listen'}</span>
-                        </button>
+                        <div className="flex items-center gap-1">
+                          <button
+                            id="tts-narration-btn"
+                            onClick={() => toggleTTS(currentResponse)}
+                            className={`flex items-center gap-1 rounded-lg border px-2.5 py-1 text-xs font-semibold ${
+                              isSpeaking
+                                ? 'border-indigo-300 bg-indigo-50 text-indigo-700 animate-pulse dark:bg-indigo-950 dark:text-indigo-300'
+                                : 'border-zinc-200 bg-white text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200'
+                            }`}
+                            title="Listen to AI voice narration"
+                          >
+                            {isSpeaking ? <VolumeX className="h-3.5 w-3.5" /> : <Volume2 className="h-3.5 w-3.5" />}
+                            <span>{isSpeaking ? 'Stop Audio' : 'Listen'}</span>
+                          </button>
+                          <select
+                            value={ttsSpeed}
+                            onChange={(e) => setTtsSpeed(parseFloat(e.target.value))}
+                            className="rounded-lg border border-zinc-200 bg-white px-1.5 py-1 text-[11px] font-semibold text-zinc-600 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+                            title="Voice Narration Speed"
+                          >
+                            <option value="0.75">0.75x</option>
+                            <option value="1">1.0x</option>
+                            <option value="1.25">1.25x</option>
+                            <option value="1.5">1.5x</option>
+                          </select>
+                        </div>
 
                         {/* Copy Button */}
                         <button
@@ -1305,6 +1318,16 @@ export default function AiPlayground() {
                     <option value="Gemini 3.1 Pro">Gemini 3.1 Pro (Deep Reasoning)</option>
                     <option value="GPT-4 Turbo">GPT-4 Turbo</option>
                   </select>
+                  <select
+                    value={arenaTempA}
+                    onChange={(e) => setArenaTempA(parseFloat(e.target.value))}
+                    className="rounded-lg border border-purple-200 bg-white px-1.5 py-1.5 text-xs text-purple-700 font-mono dark:border-purple-800 dark:bg-zinc-800 dark:text-purple-300"
+                    title="Model A Temperature"
+                  >
+                    <option value="0.2">T: 0.2 (Precise)</option>
+                    <option value="0.7">T: 0.7 (Balanced)</option>
+                    <option value="1.0">T: 1.0 (Creative)</option>
+                  </select>
                 </div>
 
                 <div className="text-xs font-bold text-zinc-400">VS</div>
@@ -1319,6 +1342,16 @@ export default function AiPlayground() {
                     <option value="GPT-4 Turbo">GPT-4 Turbo</option>
                     <option value="Gemini 3.1 Pro">Gemini 3.1 Pro (Deep Reasoning)</option>
                     <option value="gemini-3.8-flash">Gemini 3.8 Flash (High Speed)</option>
+                  </select>
+                  <select
+                    value={arenaTempB}
+                    onChange={(e) => setArenaTempB(parseFloat(e.target.value))}
+                    className="rounded-lg border border-indigo-200 bg-white px-1.5 py-1.5 text-xs text-indigo-700 font-mono dark:border-indigo-800 dark:bg-zinc-800 dark:text-indigo-300"
+                    title="Model B Temperature"
+                  >
+                    <option value="0.2">T: 0.2 (Precise)</option>
+                    <option value="0.7">T: 0.7 (Balanced)</option>
+                    <option value="1.0">T: 1.0 (Creative)</option>
                   </select>
                 </div>
               </div>
