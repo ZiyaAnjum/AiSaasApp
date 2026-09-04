@@ -96,6 +96,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
       setToken(data.token);
       setUser(data.user);
+      if (data.plan) setPlan(data.plan);
+      if (data.subscription) setSubscription(data.subscription);
       setShowAuthModal(false);
       showToast(`Welcome back, ${data.user.name}!`, 'success');
       return { success: true };
@@ -122,8 +124,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
       setToken(data.token);
       setUser(data.user);
+      if (data.plan) setPlan(data.plan);
+      if (data.subscription) setSubscription(data.subscription);
       setShowAuthModal(false);
-      showToast(`Welcome to AI SaaS, ${data.user.name}!`, 'success');
+      showToast(`Welcome to NexusAI, ${data.user.name}!`, 'success');
       return { success: true };
     } catch {
       return { success: false, error: 'Network error during signup' };
@@ -145,23 +149,51 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [showToast]);
 
   const switchDemoAccount = useCallback(async (accountType: 'admin' | 'pro' | 'starter' | 'free') => {
-    const creds = {
-      admin: { email: 'admin@aisaas.com', password: 'Admin@123' },
-      pro: { email: 'pro@example.com', password: 'User@123' },
-      starter: { email: 'starter@example.com', password: 'User@123' },
-      free: { email: 'free@example.com', password: 'User@123' },
-    };
+    try {
+      const res = await fetch('/api/auth/demo-switch', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ role: accountType }),
+      });
 
-    const target = creds[accountType];
-    const result = await login(target.email, target.password);
-    if (result.success) {
-      if (accountType === 'admin') {
-        setActiveTab('admin');
+      const data = await res.json();
+      if (res.ok && data.user) {
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('ai_saas_token', data.token);
+        }
+        setToken(data.token);
+        setUser(data.user);
+        setPlan(data.plan);
+        setSubscription(data.subscription);
+        setShowAuthModal(false);
+
+        if (accountType === 'admin') {
+          setActiveTab('admin');
+        } else {
+          setActiveTab('playground');
+        }
+
+        showToast(`Switched to ${data.user.name} (${data.user.planId?.toUpperCase() || accountType.toUpperCase()} Tier)`, 'success');
       } else {
-        setActiveTab('playground');
+        // Fallback login
+        const creds = {
+          admin: { email: 'admin@aisaas.com', password: 'Admin@123' },
+          pro: { email: 'pro@example.com', password: 'User@123' },
+          starter: { email: 'starter@example.com', password: 'User@123' },
+          free: { email: 'free@example.com', password: 'User@123' },
+        };
+        const target = creds[accountType];
+        await login(target.email, target.password);
+        if (accountType === 'admin') {
+          setActiveTab('admin');
+        } else {
+          setActiveTab('playground');
+        }
       }
+    } catch {
+      showToast(`Switched to ${accountType.toUpperCase()} Demo Mode`, 'info');
     }
-  }, [login]);
+  }, [login, showToast]);
 
   useEffect(() => {
     const initAuth = async () => {

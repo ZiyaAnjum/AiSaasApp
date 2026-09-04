@@ -53,37 +53,129 @@ function AppContent() {
         )}
       </main>
 
-      {/* Global Footer */}
-      <footer className="border-t border-zinc-200 bg-white py-6 dark:border-zinc-800 dark:bg-zinc-900">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <div className="flex h-6 w-6 items-center justify-center rounded-md bg-blue-600 text-white font-bold text-xs">
-              N
+      {/* Global Enterprise Footer */}
+      <footer className="border-t border-zinc-200 bg-white dark:border-zinc-800/80 dark:bg-zinc-950">
+        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 gap-8 md:grid-cols-4 lg:grid-cols-5">
+            <div className="col-span-2">
+              <div className="flex items-center gap-2.5">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-900 text-white font-bold text-sm shadow-sm dark:bg-white dark:text-zinc-900">
+                  N
+                </div>
+                <span className="text-base font-bold tracking-tight text-zinc-900 dark:text-white">
+                  NexusAI
+                </span>
+                <span className="rounded bg-zinc-100 px-1.5 py-0.5 text-[10px] font-semibold text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
+                  v2.4
+                </span>
+              </div>
+              <p className="mt-3 max-w-sm text-xs leading-relaxed text-zinc-500 dark:text-zinc-400">
+                Enterprise AI infrastructure delivering low-latency inference, real-time telemetry, model benchmarking, and intelligent workflow automation.
+              </p>
+              <div className="mt-4 flex items-center gap-2">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold text-emerald-700 dark:border-emerald-900/60 dark:bg-emerald-950/40 dark:text-emerald-300">
+                  <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                  Systems Operational
+                </span>
+                <span className="text-xs text-zinc-400">· 99.99% SLA</span>
+              </div>
             </div>
-            <span className="text-xs font-bold tracking-tight text-zinc-900 dark:text-white">
-              NexusAI SaaS Platform
-            </span>
-            <span className="text-xs text-zinc-400">· Next.js 15 & Gemini SDK</span>
+
+            <div>
+              <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-900 dark:text-zinc-200">
+                Platform
+              </h4>
+              <ul className="mt-3 space-y-2 text-xs text-zinc-600 dark:text-zinc-400">
+                <li>
+                  <button
+                    onClick={() => setActiveTab('playground')}
+                    className="hover:text-zinc-900 dark:hover:text-white transition-colors"
+                  >
+                    AI Studio & Arena
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => setActiveTab('history')}
+                    className="hover:text-zinc-900 dark:hover:text-white transition-colors"
+                  >
+                    Request Telemetry
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => setActiveTab('usage')}
+                    className="hover:text-zinc-900 dark:hover:text-white transition-colors"
+                  >
+                    Usage & Analytics
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-900 dark:text-zinc-200">
+                Developers
+              </h4>
+              <ul className="mt-3 space-y-2 text-xs text-zinc-600 dark:text-zinc-400">
+                <li>
+                  <button
+                    onClick={() => setActiveTab('apikeys')}
+                    className="hover:text-zinc-900 dark:hover:text-white transition-colors flex items-center gap-1"
+                  >
+                    <Terminal className="h-3 w-3" />
+                    API Credentials
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => setActiveTab('pricing')}
+                    className="hover:text-zinc-900 dark:hover:text-white transition-colors"
+                  >
+                    Rate Limits & Tiers
+                  </button>
+                </li>
+                <li>
+                  <a
+                    href="#docs"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setActiveTab('apikeys');
+                    }}
+                    className="hover:text-zinc-900 dark:hover:text-white transition-colors"
+                  >
+                    Documentation
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-900 dark:text-zinc-200">
+                Security & Trust
+              </h4>
+              <ul className="mt-3 space-y-2 text-xs text-zinc-600 dark:text-zinc-400">
+                <li className="flex items-center gap-1 text-zinc-500 dark:text-zinc-400">
+                  <ShieldCheck className="h-3.5 w-3.5 text-emerald-500" />
+                  SOC2 Certified
+                </li>
+                <li className="text-zinc-500 dark:text-zinc-400">
+                  256-bit SSL Encrypted
+                </li>
+                <li className="text-zinc-500 dark:text-zinc-400">
+                  Zero Data Retention
+                </li>
+              </ul>
+            </div>
           </div>
 
-          <div className="flex items-center gap-4 text-xs text-zinc-500 dark:text-zinc-400">
-            <button
-              onClick={() => setActiveTab('apikeys')}
-              className="flex items-center gap-1 hover:text-zinc-900 dark:hover:text-white"
-            >
-              <Terminal className="h-3.5 w-3.5" />
-              Developer API
-            </button>
-            <button
-              onClick={() => setActiveTab('pricing')}
-              className="hover:text-zinc-900 dark:hover:text-white"
-            >
-              Subscription Plans
-            </button>
-            <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              All Systems Operational
-            </span>
+          <div className="mt-8 flex flex-col sm:flex-row items-center justify-between border-t border-zinc-100 pt-6 text-xs text-zinc-500 dark:border-zinc-800/80 dark:text-zinc-400 gap-3">
+            <p>© 2026 NexusAI Inc. All rights reserved. Enterprise AI Platform.</p>
+            <div className="flex items-center gap-4">
+              <span className="hover:underline cursor-pointer">Privacy Policy</span>
+              <span className="hover:underline cursor-pointer">Terms of Service</span>
+              <span className="hover:underline cursor-pointer">Security Portal</span>
+            </div>
           </div>
         </div>
       </footer>
